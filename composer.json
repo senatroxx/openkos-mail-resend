@@ -12,7 +12,7 @@
         "php": "^8.3",
         "illuminate/mail": "^13.0",
         "illuminate/support": "^13.0",
-        "openkos/platform": "^0.1",
+        "openkos/platform": "^0.2",
         "resend/resend-php": "^1.0"
     },
     "require-dev": {
