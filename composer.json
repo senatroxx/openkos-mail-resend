@@ -1,0 +1,54 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "openkos/mail-resend",
+    "description": "Resend mail driver for OpenKOS.",
+    "keywords": [
+        "openkos",
+        "mail",
+        "resend"
+    ],
+    "license": "Apache-2.0",
+    "require": {
+        "php": "^8.3",
+        "illuminate/mail": "^13.0",
+        "illuminate/support": "^13.0",
+        "openkos/platform": "^0.1",
+        "resend/resend-php": "^1.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.27",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.7",
+        "pestphp/pest-plugin-laravel": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenKOS\\MailResend\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "@php vendor/bin/pest",
+        "lint": "@php vendor/bin/pint --test --format agent"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OpenKOS\\MailResend\\ResendServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
