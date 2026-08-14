@@ -32,9 +32,17 @@ class ResendDriver implements MailDriver
 
     public function health(): DriverHealthResult
     {
-        return $this->apiKey() === null
-            ? new DriverHealthResult(false, 'Resend API key is not configured.')
-            : new DriverHealthResult(true, 'Resend API key is configured; connectivity was not checked.');
+        if ($this->apiKey() === null) {
+            return new DriverHealthResult(false, 'Resend API key is not configured.');
+        }
+
+        try {
+            $this->client()->domains->list(['limit' => 1]);
+        } catch (Throwable) {
+            return new DriverHealthResult(false, 'Resend API connection check failed.');
+        }
+
+        return new DriverHealthResult(true, 'Resend API connection verified.');
     }
 
     public function configurationSchema(): array

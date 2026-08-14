@@ -15,7 +15,7 @@ final class ResendClientFake implements ClientContract
     public int $propertyAccesses = 0;
 
     public function __construct(
-        private object $emails,
+        private object $service,
         private bool $throwOnPropertyAccess = false,
     ) {}
 
@@ -27,7 +27,7 @@ final class ResendClientFake implements ClientContract
             throw new RuntimeException('Unexpected SDK request.');
         }
 
-        return $this->emails;
+        return $this->service;
     }
 }
 
@@ -63,18 +63,31 @@ it('uses Laravel native Resend transport for the advertised mailer', function ()
         ->toBeInstanceOf(ResendTransport::class);
 });
 
-it('reports key configuration without making a health request', function () {
-    $client = new ResendClientFake(new stdClass, true);
+it('checks Resend connectivity without sending mail', function () {
+    $domains = m::mock();
+    $domains->shouldReceive('list')->once()->with(['limit' => 1])->andReturn(new stdClass);
+
+    $client = new ResendClientFake($domains);
 
     $missing = new ResendDriver(client: $client);
     $missingHealth = $missing->health();
-    config(['resend.api_key' => 're_test_key']);
-    $configured = new ResendDriver(client: $client);
+    $configuredHealth = (new ResendDriver(['key' => 're_test_key'], $client))->health();
 
     expect($missingHealth->healthy)->toBeFalse()
-        ->and($configured->health()->healthy)->toBeTrue()
-        ->and($configured->health()->message)->toContain('connectivity was not checked')
-        ->and($client->propertyAccesses)->toBe(0);
+        ->and($configuredHealth->healthy)->toBeTrue()
+        ->and($configuredHealth->message)->toBe('Resend API connection verified.')
+        ->and($client->propertyAccesses)->toBe(1);
+});
+
+it('reports failed Resend connectivity checks without exposing credentials', function () {
+    $domains = m::mock();
+    $domains->shouldReceive('list')->once()->with(['limit' => 1])->andThrow(new RuntimeException('secret re_test_key leaked'));
+
+    $health = (new ResendDriver(['key' => 're_test_key'], new ResendClientFake($domains)))->health();
+
+    expect($health->healthy)->toBeFalse()
+        ->and($health->message)->toBe('Resend API connection check failed.')
+        ->and($health->message)->not->toContain('re_test_key');
 });
 
 it('maps an OpenKOS message to the Resend SDK and returns its id', function () {
