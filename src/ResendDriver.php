@@ -37,6 +37,18 @@ class ResendDriver implements MailDriver
             : new DriverHealthResult(true, 'Resend API key is configured; connectivity was not checked.');
     }
 
+    public function configurationSchema(): array
+    {
+        return [
+            'key' => [
+                'label' => 'Resend API Key',
+                'type' => 'password',
+                'required' => true,
+                'placeholder' => 're_...',
+            ],
+        ];
+    }
+
     private function client(): Client
     {
         if ($this->client) {
@@ -54,7 +66,7 @@ class ResendDriver implements MailDriver
 
     private function apiKey(): ?string
     {
-        $apiKey = $this->config['api_key'] ?? config('resend.api_key');
+        $apiKey = $this->config['key'] ?? $this->config['api_key'] ?? config('resend.api_key');
 
         return is_string($apiKey) && trim($apiKey) !== '' ? $apiKey : null;
     }

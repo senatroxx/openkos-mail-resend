@@ -45,6 +45,17 @@ it('registers the driver and native Laravel mailer', function () {
         ]);
 });
 
+it('exposes an API key field without putting credentials in registration metadata', function () {
+    expect((new ResendDriver)->configurationSchema())->toMatchArray([
+        'key' => [
+            'label' => 'Resend API Key',
+            'type' => 'password',
+            'required' => true,
+            'placeholder' => 're_...',
+        ],
+    ]);
+});
+
 it('uses Laravel native Resend transport for the advertised mailer', function () {
     config(['mail.mailers.resend.key' => 're_test_key']);
 

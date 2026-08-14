@@ -8,7 +8,8 @@ Standalone Resend integration for OpenKOS mail notifications.
 composer require openkos/mail-resend
 ```
 
-Set `RESEND_API_KEY` and configure the OpenKOS mail driver as `openkos/resend`.
+Set `RESEND_API_KEY` or enter the key in the OpenKOS mail settings page, then
+configure the OpenKOS mail driver as `openkos/resend`.
 
 The package registers both OpenKOS custom mail delivery and Laravel's native
 `resend` mailer. Native Laravel notifications use Laravel's built-in Resend
