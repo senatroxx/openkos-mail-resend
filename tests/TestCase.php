@@ -3,7 +3,6 @@
 namespace Tests;
 
 use OpenKOS\Core\Contracts\SettingsStore;
-use OpenKOS\MailResend\ResendServiceProvider;
 use OpenKOS\Platform\PlatformServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
@@ -26,7 +25,6 @@ abstract class TestCase extends BaseTestCase
     {
         return [
             PlatformServiceProvider::class,
-            ResendServiceProvider::class,
         ];
     }
 }

@@ -37,10 +37,8 @@
         "lint": "@php vendor/bin/pint --test --format agent"
     },
     "extra": {
-        "laravel": {
-            "providers": [
-                "OpenKOS\\MailResend\\ResendServiceProvider"
-            ]
+        "openkos": {
+            "plugin": "OpenKOS\\MailResend\\ResendPlugin"
         }
     },
     "config": {

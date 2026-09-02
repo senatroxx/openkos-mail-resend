@@ -7,6 +7,8 @@ use OpenKOS\Core\Data\Mail\MailAddress;
 use OpenKOS\Core\Data\Mail\MailAttachment;
 use OpenKOS\Core\Data\Mail\MailMessage;
 use OpenKOS\MailResend\ResendDriver;
+use OpenKOS\MailResend\ResendPlugin;
+use OpenKOS\MailResend\ResendServiceProvider;
 use OpenKOS\Platform\OpenKOSManager;
 use Resend\Contracts\Client as ClientContract;
 
@@ -32,6 +34,10 @@ final class ResendClientFake implements ClientContract
 }
 
 it('registers the driver and native Laravel mailer', function () {
+    $provider = new ResendServiceProvider(app());
+    $provider->register();
+    $provider->boot(app(OpenKOSManager::class));
+
     $registration = app(OpenKOSManager::class)->notifications()->get('openkos/resend');
 
     expect($registration)->not->toBeNull()
@@ -43,6 +49,16 @@ it('registers the driver and native Laravel mailer', function () {
             'transport' => 'resend',
             'key' => null,
         ]);
+});
+
+it('registers through the canonical plugin entrypoint', function () {
+    $plugin = new ResendPlugin;
+
+    $plugin->register(app(OpenKOSManager::class));
+
+    expect($plugin->manifest()->id)->toBe('openkos/mail-resend')
+        ->and(app(OpenKOSManager::class)->notifications()->get('openkos/resend')->driverClass)
+        ->toBe(ResendDriver::class);
 });
 
 it('exposes an API key field without putting credentials in registration metadata', function () {
