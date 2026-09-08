@@ -1,7 +1,7 @@
 {
     "id": "openkos/mail-resend",
     "name": "Resend Mail",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Resend mail integration for OpenKOS notifications.",
     "entry_class": "OpenKOS\\MailResend\\ResendPlugin",
     "core_version": "^0.2",

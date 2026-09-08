@@ -13,7 +13,7 @@ final class ResendPlugin extends Plugin
         return new PluginManifest(
             id: 'openkos/mail-resend',
             name: 'Resend Mail',
-            version: '0.2.2',
+            version: '0.2.3',
             description: 'Resend mail integration for OpenKOS notifications.',
             coreVersion: '^0.2',
         );
