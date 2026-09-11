@@ -4,7 +4,6 @@
     "version": "0.2.8",
     "description": "Resend mail integration for OpenKOS notifications.",
     "entry_class": "OpenKOS\\MailResend\\ResendPlugin",
-    "core_version": "^0.2",
     "php": ">=8.4 <8.6",
     "dependencies": []
 }

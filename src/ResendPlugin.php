@@ -15,7 +15,6 @@ final class ResendPlugin extends Plugin
             name: 'Resend Mail',
             version: '0.2.8',
             description: 'Resend mail integration for OpenKOS notifications.',
-            coreVersion: '^0.2',
         );
     }
 
